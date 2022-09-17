@@ -55,6 +55,11 @@
     justify-content: center;
 }
 
+.pagination {
+    display: flex;
+    justify-content: center;
+}
+
 
 ::-webkit-scrollbar {
     display: none;
