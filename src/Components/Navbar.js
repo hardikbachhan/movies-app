@@ -11,10 +11,12 @@ export default class Navbar extends Component {
           alignItems: "center",
           background: "lightblue",
           padding: "1rem",
+          color: "white",
+          backgroundColor: "#222",
         }}
       >
-        <h1>Movies App</h1>
-        <h3 style={{marginLeft: "2rem"}}>Favourites</h3>
+        <h2>Movies App</h2>
+        <h4 style={{marginLeft: "2rem"}}>Favourites</h4>
       </div>
     );
   }
