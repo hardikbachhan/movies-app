@@ -1,6 +1,5 @@
 import axios from "axios";
 import React, { Component } from "react";
-import { movies } from "./getMovies";
 
 export default class List extends Component {
   constructor() {
@@ -107,13 +106,13 @@ export default class List extends Component {
           <nav aria-label="Page navigation example">
             <ul className="pagination">
               <li className="page-item" onClick={this.handlePrevPage}>
-                <a className="page-link">Previous</a>
+                <button className="page-link">Previous</button>
               </li>
               <li className="page-item">
-                <a className="page-link">{this.state.currPage}</a>
+                <button className="page-link">{this.state.currPage}</button>
               </li>
               <li className="page-item" onClick={this.handleNextPage}>
-                <a className="page-link">Next</a>
+                <button className="page-link">Next</button>
               </li>
             </ul>
           </nav>

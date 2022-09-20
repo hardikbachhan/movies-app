@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { movies } from "./getMovies";
 import axios from "axios";
 
 export default class Banner extends Component {
@@ -31,8 +30,8 @@ export default class Banner extends Component {
         <>
       { this.state.movies.length === 0
         ? 
-        (<div class="spinner-border text-info" role="status">
-        <span class="visually-hidden">Loading...</span>
+        (<div className="spinner-border text-info" role="status">
+        <span className="visually-hidden">Loading...</span>
         </div>)
         :
         (<div className="card banner-card">

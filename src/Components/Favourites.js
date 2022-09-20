@@ -61,7 +61,7 @@ export default class Favourites extends Component {
               this.state.movies.map((movieObj) => {
                 return (
                   <tr key={movieObj.id}>
-                    <td scope="row">
+                    <td>
                       <img
                         src={`https://image.tmdb.org/t/p/original${movieObj.backdrop_path}`}
                         alt="movie_img"
