@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 
 export default class Navbar extends Component {
   render() {
@@ -15,8 +16,12 @@ export default class Navbar extends Component {
           backgroundColor: "#222",
         }}
       >
-        <h2>Movies App</h2>
-        <h4 style={{marginLeft: "2rem"}}>Favourites</h4>
+        <Link to="/" style={{textDecoration: "none", color: "white"}}>
+          <h2>Movies App</h2>
+        </Link>
+        <Link to="/favourites" style={{textDecoration: "none", color: "white"}}>
+          <h4 className="ms-3">Favourites</h4>
+        </Link>
       </div>
     );
   }
