@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import axios from "axios";
 
 export default class Favourites extends Component {
   constructor() {
@@ -93,8 +92,8 @@ export default class Favourites extends Component {
     };
 
     let filteredMovies = [];
-    if (this.state.currGenre != "All Genre") {
-        filteredMovies = this.state.movies.filter(movieObj => genreId[movieObj.genre_ids[0]] == this.state.currGenre);
+    if (this.state.currGenre !== "All Genre") {
+        filteredMovies = this.state.movies.filter(movieObj => genreId[movieObj.genre_ids[0]] === this.state.currGenre);
     } else {
         filteredMovies = this.state.movies;
     }

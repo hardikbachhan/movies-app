@@ -75,7 +75,7 @@ export default class List extends Component {
 
     if (this.state.fav.includes(movieObj.id)) {
         // if id already present -> remove
-        favMovies = favMovies.filter(movie => movieObj.id != movie.id);
+        favMovies = favMovies.filter(movie => movieObj.id !== movie.id);
     } else {
         // add
         favMovies.push(movieObj);
