@@ -12,11 +12,12 @@ export default class Favourites extends Component {
   }
 
   async componentDidMount() {
-    const url = `https://api.themoviedb.org/3/movie/popular?api_key=e3bb04c2aa022ca21c789d24f6400903&language=en-US&page=1`;
+    // const url = `https://api.themoviedb.org/3/movie/popular?api_key=e3bb04c2aa022ca21c789d24f6400903&language=en-US&page=1`;
     // let res = await fetch(url);
     // let data = await res.json();
     // console.log(data);
-    let data = await axios.get(url);
+    // let data = await axios.get(url);
+    let data = JSON.parse(localStorage.getItem("movies"));
     // console.log(data.data.results);
 
     let genreId = {
@@ -42,7 +43,7 @@ export default class Favourites extends Component {
     };
 
     let allGenre = [];
-    data.data.results.map((movieObj) => {
+    data.map((movieObj) => {
       if (!allGenre.includes(genreId[movieObj.genre_ids[0]])) {
         allGenre.push(genreId[movieObj.genre_ids[0]]);
       }
@@ -53,7 +54,7 @@ export default class Favourites extends Component {
     // console.log(allGenre);
 
     this.setState({
-      movies: [...data.data.results],
+      movies: [...data],
       genre: [...allGenre],
     });
 
@@ -62,6 +63,7 @@ export default class Favourites extends Component {
 
   handleGenre = (e) => {
     let genre = e.target.innerText;
+    // function movies ko filter kar ke le aayega
     this.setState({
         currGenre: genre,
     })
@@ -89,6 +91,13 @@ export default class Favourites extends Component {
       10752: "War",
       37: "Western",
     };
+
+    let filteredMovies = [];
+    if (this.state.currGenre != "All Genre") {
+        filteredMovies = this.state.movies.filter(movieObj => genreId[movieObj.genre_ids[0]] == this.state.currGenre);
+    } else {
+        filteredMovies = this.state.movies;
+    }
 
     return (
       <div className="row">
@@ -128,8 +137,8 @@ export default class Favourites extends Component {
               </tr>
             </thead>
             <tbody>
-              {this.state.movies.length > 0 &&
-                this.state.movies.map((movieObj) => {
+              {filteredMovies.length > 0 &&
+                filteredMovies.map((movieObj) => {
                   return (
                     <tr key={movieObj.id}>
                       <td>

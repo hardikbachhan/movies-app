@@ -8,8 +8,9 @@ export default class List extends Component {
       hover: "",
       movies: [],
       currPage: 1,
-      favMovies: [],
+      fav: (JSON.parse(localStorage.getItem("movies")) || []).map((movieObj) => movieObj.id),  //[],  // id of movies
     };
+    this.favMovies = [];  // object of movies
     console.log("constructor method of list component called");
   }
 
@@ -70,10 +71,44 @@ export default class List extends Component {
   };
 
   handleFavourites = (movieObj) => {
-    console.log(movieObj);
-    // if id already present -> then remove
-    // if (this.state.favMovies.includes())
-    // else -> add
+    let favMovies = JSON.parse(localStorage.getItem("movies")) || [];
+
+    if (this.state.fav.includes(movieObj.id)) {
+        // if id already present -> remove
+        favMovies = favMovies.filter(movie => movieObj.id != movie.id);
+    } else {
+        // add
+        favMovies.push(movieObj);
+    }
+    let tempData = favMovies.map(movieObj => movieObj.id);
+
+    localStorage.setItem("movies", JSON.stringify(favMovies));
+
+    this.setState({
+        fav: [...tempData],  // id of movies
+    })
+    // let newFavMovies = [];
+    // if (this.state.favMovies.length === 0) {
+    //     newFavMovies.push(movieObj);
+    //     // console.log(newFavMovies);
+    // } else {
+    //     // if id already present -> then remove
+    //     // else -> add
+    //     let isPresent = false;
+    //     newFavMovies = this.state.favMovies.filter((favMovieObj) => {
+    //         if (favMovieObj.id === movieObj.id) {
+    //             isPresent = true;
+    //             return false;
+    //         }
+    //         return true;
+    //     });
+    //     if (isPresent == false) {
+    //         newFavMovies.push(movieObj);
+    //     }
+    // }
+    // this.setState({
+    //     favMovies: [...newFavMovies],
+    // })
   };
 
   render() {
@@ -114,7 +149,7 @@ export default class List extends Component {
                           className="btn btn-info movie-button"
                           onClick={() => this.handleFavourites(movieObj)}
                         >
-                          Add to Favourites
+                          {this.state.fav.includes(movieObj.id) ? "Remove from Favourites" : "Add to Favourites"}
                         </button>
                       </div>
                     )}

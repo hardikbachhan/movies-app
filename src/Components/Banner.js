@@ -19,7 +19,7 @@ export default class Banner extends Component {
     // let data = await res.json();
     // console.log(data);
     let data = await axios.get(url);
-    console.log(data.data);
+    // console.log(data.data);
     this.setState({
       movies: [...data.data.results],
     });
@@ -45,7 +45,7 @@ export default class Banner extends Component {
           >
             {this.state.movies.slice(0, 8).map((movieObj) => {
               return (
-                <div style={{height: "90vh"}}>
+                <div style={{height: "90vh"}} key={movieObj.id}>
                   <img
                     src={`https://image.tmdb.org/t/p/original${movieObj.backdrop_path}`}
                     alt="movie-img"
