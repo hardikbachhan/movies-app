@@ -45,7 +45,7 @@ export default class Banner extends Component {
           >
             {this.state.movies.slice(0, 8).map((movieObj) => {
               return (
-                <div style={{height: "90vh"}} key={movieObj.id}>
+                <div style={{height: "88vh"}} key={movieObj.id}>
                   <img
                     src={`https://image.tmdb.org/t/p/original${movieObj.backdrop_path}`}
                     alt="movie-img"

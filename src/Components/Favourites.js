@@ -7,6 +7,9 @@ export default class Favourites extends Component {
       movies: [],
       genre: [],
       currGenre: "All Genre",
+      currText: "",
+      limit: 5,
+      currPage: 1,
     };
   }
 
@@ -68,6 +71,60 @@ export default class Favourites extends Component {
     })
   }
 
+  handleText = (e) => {
+    this.setState({
+        currText: e.target.value,
+    })
+  }
+
+  sortPopularityAsc = () => {
+    let allMovies = this.state.movies;
+    allMovies.sort((objA, objB) => {
+        return objA.popularity - objB.popularity;
+    })
+    this.setState({
+        movies: [...allMovies],
+    })
+  }
+
+  sortPopularityDsc = () => {
+    let allMovies = this.state.movies;
+    allMovies.sort((objA, objB) => {
+        return objB.popularity - objA.popularity;
+    })
+    this.setState({
+        movies: [...allMovies],
+    })
+  }
+
+  sortRatingAsc = () => {
+    let allMovies = this.state.movies;
+    allMovies.sort((objA, objB) => {
+        return objA.vote_average - objB.vote_average;
+    })
+    this.setState({
+        movies: [...allMovies],
+    })
+  }
+
+  sortRatingDsc = () => {
+    let allMovies = this.state.movies;
+    allMovies.sort((objA, objB) => {
+        return objB.vote_average - objA.vote_average;
+    })
+    this.setState({
+        movies: [...allMovies],
+    })
+  }
+
+  handleDelete = (id) => {
+    let newMovies = this.state.movies.filter(movieObj => movieObj.id !== id);
+    this.setState({
+        movies: [...newMovies],
+    });
+    localStorage.setItem("movies", JSON.stringify(newMovies));
+  }
+
   render() {
     let genreId = {
       28: "Action",
@@ -91,12 +148,31 @@ export default class Favourites extends Component {
       37: "Western",
     };
 
-    let filteredMovies = [];
-    if (this.state.currGenre !== "All Genre") {
-        filteredMovies = this.state.movies.filter(movieObj => genreId[movieObj.genre_ids[0]] === this.state.currGenre);
-    } else {
-        filteredMovies = this.state.movies;
+    let filteredMovies = this.state.movies;
+
+    if (this.state.currText !== "") {
+    //     filteredMovies = this.state.movies;
+    // } else {
+        filteredMovies = filteredMovies.filter(movieObj => {
+            let movieName = movieObj.original_title.toLowerCase();
+            return movieName.includes(this.state.currText.toLowerCase());
+        })
     }
+
+    if (this.state.currGenre !== "All Genre") {
+        filteredMovies = filteredMovies.filter(movieObj => genreId[movieObj.genre_ids[0]] === this.state.currGenre);
+    // } else {
+        // filteredMovies = this.state.movies;
+    }
+
+    let numOfPages = Math.ceil(filteredMovies.length / this.state.limit);
+    let pagesArr = [];
+    for(let i = 1; i <= numOfPages; i++) {
+        pagesArr.push(i);
+    }
+    let si = (this.state.currPage - 1) * this.state.limit;
+    let ei = si + this.state.limit;
+    filteredMovies = filteredMovies.slice(si, ei);
 
     return (
       <div className="row">
@@ -119,11 +195,13 @@ export default class Favourites extends Component {
         </div>
         <div className="col p-5">
           <div className="row mb-3">
-            <input className="col-8 mx-2" type="text" placeholder="Search" />
+            <input className="col-8 mx-2" type="text" placeholder="Search" value={this.state.currText} onChange={this.handleText} />
             <input
               className="col-3"
               type="number"
               placeholder="Results per page"
+              value={this.state.limit}
+              onChange={(e) => Number(e.target.value) > 1 && this.setState({limit: Number(e.target.value)})}
             />
           </div>
           <table className="table">
@@ -131,8 +209,16 @@ export default class Favourites extends Component {
               <tr>
                 <th scope="col">Title</th>
                 <th scope="col">Genre</th>
-                <th scope="col">Popularity</th>
-                <th scope="col">Rating</th>
+                <th scope="col">
+                    <i class="fa-solid fa-sort-up" onClick={this.sortPopularityAsc}/>
+                        Popularity
+                    <i class="fa-solid fa-sort-down" onClick={this.sortPopularityDsc}/>
+                </th>
+                <th scope="col">
+                    <i class="fa-solid fa-sort-up" onClick={this.sortRatingAsc}/>
+                        Rating
+                    <i class="fa-solid fa-sort-down" onClick={this.sortRatingDsc}/>
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -156,6 +242,7 @@ export default class Favourites extends Component {
                         <button
                           type="button"
                           className="btn btn-outline-danger"
+                          onClick={() => this.handleDelete(movieObj.id)}
                         >
                           Delete
                         </button>
@@ -165,6 +252,17 @@ export default class Favourites extends Component {
                 })}
             </tbody>
           </table>
+          <nav aria-label="Page navigation example">
+            <ul className="pagination">
+                {pagesArr.map(pageNum => {
+                    return (
+                        <li className="page-item" onClick={() => this.setState({currPage: pageNum})}>
+                            <button className="page-link">{pageNum}</button>
+                        </li>
+                    )
+                })}
+            </ul>
+          </nav>
         </div>
       </div>
     );
